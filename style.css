@@ -1,6 +1,6 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Times New Roman', sans-serif;
+    background-color: #e0e0e0; /* Warna abu-abu muda sebagai dasar */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@ body {
 }
 
 #app {
-    background-color: #fff;
+    background-color: #f9f2e7; /* Warna krem/cokelat muda vintage */
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -21,12 +21,12 @@ body {
 }
 
 h1 {
-    color: #333;
+    color: #5e4a3d; /* Warna cokelat tua */
     margin-bottom: 20px;
 }
 
 p {
-    color: #666;
+    color: #77685a; /* Warna cokelat sedang */
     line-height: 1.6;
 }
 
@@ -34,25 +34,30 @@ input[type="password"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ddd;
+    border: 1px solid #c8b3a3; /* Warna cokelat muda untuk border */
     border-radius: 4px;
     font-size: 16px;
     text-align: center;
+    background-color: #fdf8f2; /* Warna latar belakang input */
 }
 
 button {
-    background-color: #007bff;
-    color: white;
+    background-color: #a8dadc; /* Warna teal lembut */
+    color: #1d3557; /* Warna biru tua */
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
+    margin-top: 5px;
+    margin-left: 5px; /* Tambahkan sedikit jarak antar tombol */
+    margin-right: 5px;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #457b9d; /* Warna biru lebih gelap saat hover */
+    color: white;
 }
 
 .hidden {
@@ -60,7 +65,7 @@ button:hover {
 }
 
 #error-message {
-    color: #dc3545;
+    color: #e63946; /* Warna merah */
     margin-top: 10px;
     font-weight: bold;
 }
@@ -69,11 +74,35 @@ button:hover {
     text-align: left;
     margin-top: 20px;
     padding: 15px;
-    border: 1px dashed #ccc;
+    border: 1px dashed #c8b3a3; /* Border dashed cokelat */
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: #fdf8f2; /* Latar belakang surat */
 }
 
 .letter-content p {
     margin-bottom: 10px;
+}
+
+#code-section {
+    text-align: left;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    white-space: pre-wrap; /* menjaga format kode */
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-x: auto; /* Untuk scroll horizontal jika kode terlalu panjang */
+}
+
+#code-section h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#code-section button {
+    margin-top: 10px;
 }
