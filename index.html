@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Pribadi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div id="login-section">
+            <h1>Masukkan Kata Sandi</h1>
+            <p>Surat ini hanya untuk orang tertentu.</p>
+            <input type="password" id="password-input" placeholder="Masukkan kata sandi">
+            <button onclick="checkPassword()">Masuk</button>
+            <p id="error-message" class="hidden">Kata sandi salah. Coba lagi!</p>
+        </div>
+
+        <div id="letter-section" class="hidden">
+            <h1>Untukmu, Pembaca Rahasia</h1>
+            <div class="letter-content">
+                <p>Halo, [Good Listener],</p>
+                <p>Ini adalah isi surat pribadi yang saya ingin Anda baca. Saya harap Anda baik-baik saja dan pesan ini menemukan Anda dalam keadaan terbaik.</p>
+                <p>Saya ingin berbagi beberapa pemikiran dan kabar terbaru dengan Anda. [Lanjutkan isi surat Anda di sini. Anda bisa menulis apa saja: cerita, pesan, kenangan, atau informasi penting.]</p>
+                <p>Ingatlah bahwa surat ini bersifat rahasia dan hanya ditujukan untuk Anda.</p>
+                <p>Terima kasih telah meluangkan waktu untuk membaca.</p>
+                <p>Salam hangat,</p>
+                <p>[Tabrizzi Aqlia]</p>
+                <p><em>Tanggal: 26 Juli 2025</em></p>
+            </div>
+            <button onclick="logout()">Keluar</button>
+        </div>
+    </div>
+
+    <script>
+        // *** Ini adalah bagian kata sandi yang kurang aman ***
+        // *** Ganti 'katasandianda' dengan kata sandi yang Anda inginkan ***
+        const CORRECT_PASSWORD = 'terasa'; // <-- UBAH INI!
+
+        function checkPassword() {
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const loginSection = document.getElementById('login-section');
+            const letterSection = document.getElementById('letter-section');
+
+            if (passwordInput.value === CORRECT_PASSWORD) {
+                loginSection.classList.add('hidden');
+                letterSection.classList.remove('hidden');
+                errorMessage.classList.add('hidden'); // Sembunyikan pesan error jika sebelumnya tampil
+                passwordInput.value = ''; // Bersihkan input
+            } else {
+                errorMessage.classList.remove('hidden');
+                passwordInput.value = ''; // Bersihkan input
+                passwordInput.focus(); // Fokuskan kembali ke input
+            }
+        }
+
+        function logout() {
+            const loginSection = document.getElementById('login-section');
+            const letterSection = document.getElementById('letter-section');
+
+            letterSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            document.getElementById('password-input').focus(); // Fokuskan kembali ke input
+        }
+
+        // Opsional: Untuk mengizinkan menekan Enter pada input password
+        document.getElementById('password-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>
