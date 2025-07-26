@@ -11,6 +11,18 @@
     --button-hover: #5e7c7d; /* Primary lebih gelap untuk hover */
 }
 
+warning-clue {
+    color: var(--error-color); /* Menggunakan variabel warna merah yang sudah ada */
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 25px; /* Memberi jarak lebih dari input password */
+    padding: 10px 15px;
+    border: 1px solid var(--error-color);
+    border-radius: 8px;
+    background-color: #ffebeb; /* Latar belakang merah sangat muda */
+    font-size: 0.95em;
+    line-height: 1.5;
+}
 body {
     font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
     background-color: var(--background-light);
@@ -140,3 +152,4 @@ button:hover {
     margin-bottom: 15px;
     color: var(--text-dark);
 }
+
