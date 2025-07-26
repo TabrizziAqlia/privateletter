@@ -3,69 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Pribadi</title>
+    <title>Surat Pribadi Anda</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
         <div id="login-section">
-            <h1>Masukkan Kata Sandi</h1>
-            <p>Surat ini hanya untuk orang tertentu.</p>
-            <input type="password" id="password-input" placeholder="Masukkan kata sandi">
+            <h1>Selamat Datang</h1>
+            <p>Untuk membaca surat ini, silakan masukkan kata sandi.</p>
+            <input type="password" id="password-input" placeholder="Kata Sandi Rahasia">
             <button onclick="checkPassword()">Masuk</button>
             <p id="error-message" class="hidden">Kata sandi salah. Coba lagi!</p>
+            <button id="show-code-button" onclick="showCode()">Buka Tanpa Kata Sandi (Tidak Direkomendasikan)</button>
         </div>
 
         <div id="letter-section" class="hidden">
-            <h1>Untukmu, Pembaca Rahasia</h1>
+            <h1>Sebuah Pesan dari Hati</h1>
             <div class="letter-content">
-                <p>Halo, [Good Listener],</p>
-                <p>Ini adalah isi surat pribadi yang saya ingin Anda baca. Saya harap Anda baik-baik saja dan pesan ini menemukan Anda dalam keadaan terbaik.</p>
-                <p>Saya ingin berbagi beberapa pemikiran dan kabar terbaru dengan Anda. [Lanjutkan isi surat Anda di sini. Anda bisa menulis apa saja: cerita, pesan, kenangan, atau informasi penting.]</p>
-                <p>Ingatlah bahwa surat ini bersifat rahasia dan hanya ditujukan untuk Anda.</p>
-                <p>Terima kasih telah meluangkan waktu untuk membaca.</p>
-                <p>Salam hangat,</p>
-                <p>[Tabrizzi Aqlia]</p>
+                <p>Halo [Nama Penerima],</p>
+                <p>Surat ini saya tulis khusus untukmu. Semoga kamu dalam keadaan baik dan pesan ini sampai dengan selamat.</p>
+                <p>Sejak kita terakhir bertemu, banyak hal yang terjadi... [**TULIS ISI SURAT ANDA DI SINI**]. Ingatlah semua kenangan indah kita.</p>
+                <p>Pesan ini dibuat dengan penuh perhatian dan kasih sayang. Hanya untuk matamu saja.</p>
+                <p>Salam hangat selalu,</p>
+                <p><span id="sender-name">[Nama Anda]</span></p>
                 <p><em>Tanggal: 26 Juli 2025</em></p>
             </div>
             <button onclick="logout()">Keluar</button>
+            <audio id="background-music" loop>
+                <source src="lagu_90an.mp3" type="audio/mpeg">
+                Browser Anda tidak mendukung pemutar audio.
+            </audio>
+        </div>
+
+        <div id="code-section" class="hidden">
+            <h2>Isi Surat (Raw Text)</h2>
+            <pre><code id="letter-code"></code></pre>
+            <button onclick="hideCode()">Sembunyikan</button>
         </div>
     </div>
 
     <script>
-        // *** Ini adalah bagian kata sandi yang kurang aman ***
-        // *** Ganti 'katasandianda' dengan kata sandi yang Anda inginkan ***
-        const CORRECT_PASSWORD = 'terasa'; // <-- UBAH INI!
+        // *** KATA SANDI ANDA ADA DI SINI ***
+        const CORRECT_PASSWORD = 'terasa'; 
+
+        const passwordInput = document.getElementById('password-input');
+        const errorMessage = document.getElementById('error-message');
+        const loginSection = document.getElementById('login-section');
+        const letterSection = document.getElementById('letter-section');
+        const codeSection = document.getElementById('code-section');
+        const letterCodeElement = document.getElementById('letter-code');
+        const backgroundMusic = document.getElementById('background-music');
+        const letterContentElement = document.querySelector('#letter-section .letter-content');
+
 
         function checkPassword() {
-            const passwordInput = document.getElementById('password-input');
-            const errorMessage = document.getElementById('error-message');
-            const loginSection = document.getElementById('login-section');
-            const letterSection = document.getElementById('letter-section');
-
             if (passwordInput.value === CORRECT_PASSWORD) {
                 loginSection.classList.add('hidden');
                 letterSection.classList.remove('hidden');
-                errorMessage.classList.add('hidden'); // Sembunyikan pesan error jika sebelumnya tampil
+                errorMessage.classList.add('hidden');
                 passwordInput.value = ''; // Bersihkan input
+                
+                // Coba putar musik, tangani jika browser memblokir auto-play
+                const playPromise = backgroundMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        // Auto-play dimulai
+                    }).catch(error => {
+                        // Auto-play diblokir, bisa tambahkan pesan ke user atau tombol play
+                        console.log("Auto-play diblokir. Silakan putar musik secara manual.");
+                    });
+                }
+
             } else {
                 errorMessage.classList.remove('hidden');
                 passwordInput.value = ''; // Bersihkan input
                 passwordInput.focus(); // Fokuskan kembali ke input
+                backgroundMusic.pause(); // Pastikan lagu berhenti jika ada kesalahan
+                backgroundMusic.currentTime = 0; // Reset lagu
             }
         }
 
         function logout() {
-            const loginSection = document.getElementById('login-section');
-            const letterSection = document.getElementById('letter-section');
-
             letterSection.classList.add('hidden');
             loginSection.classList.remove('hidden');
-            document.getElementById('password-input').focus(); // Fokuskan kembali ke input
+            passwordInput.focus(); // Fokuskan kembali ke input
+            backgroundMusic.pause(); // Hentikan lagu saat logout
+            backgroundMusic.currentTime = 0; // Reset lagu
         }
 
-        // Opsional: Untuk mengizinkan menekan Enter pada input password
-        document.getElementById('password-input').addEventListener('keypress', function(event) {
+        function showCode() {
+            loginSection.classList.add('hidden');
+            letterSection.classList.add('hidden');
+            codeSection.classList.remove('hidden');
+            backgroundMusic.pause(); // Hentikan musik saat menampilkan kode
+            backgroundMusic.currentTime = 0; // Reset musik
+
+            // Ambil dan format konten surat untuk ditampilkan sebagai kode
+            const letterParagraphs = Array.from(letterContentElement.querySelectorAll('p')).map(p => p.textContent).join('\n\n');
+            letterCodeElement.textContent = letterParagraphs;
+        }
+
+        function hideCode() {
+            codeSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            passwordInput.focus();
+        }
+
+        // Untuk mengizinkan menekan Enter pada input password
+        passwordInput.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 checkPassword();
             }
