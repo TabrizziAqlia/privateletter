@@ -5,17 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Pribadi Anda</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div id="app">
         <div id="login-section">
             <h1>Selamat Datang</h1>
             <p>Untuk membaca surat ini, silakan masukkan kata sandi.</p>
-            <input type="password" id="password-input" placeholder="Kata Sandi Rahasia">
+            <div class="password-input-container">
+                <input type="password" id="password-input" placeholder="Kata Sandi Rahasia">
+                <span class="password-toggle" onclick="togglePasswordVisibility()">
+                    <i class="fas fa-eye" id="password-toggle-icon"></i>
+                </span>
+            </div>
             <button onclick="checkPassword()">Masuk</button>
             <p id="error-message" class="hidden">Kata sandi salah. Coba lagi!</p>
-            <button id="show-code-button" onclick="showCode()">Buka Tanpa Kata Sandi (Tidak Direkomendasikan)</button>
-        </div>
+            </div>
 
         <div id="letter-section" class="hidden">
             <h1>Sebuah Pesan dari Hati</h1>
@@ -26,7 +31,7 @@
                 <p>Pesan ini dibuat dengan penuh perhatian dan kasih sayang. Hanya untuk matamu saja.</p>
                 <p>Salam hangat selalu,</p>
                 <p><span id="sender-name">[Nama Anda]</span></p>
-                <p><em>Tanggal: 26 Juli 2025</em></p>
+                <p><em>Tanggal: 27 Juli 2025</em></p>
             </div>
             <button onclick="logout()">Keluar</button>
             <audio id="background-music" loop>
@@ -54,6 +59,7 @@
         const letterCodeElement = document.getElementById('letter-code');
         const backgroundMusic = document.getElementById('background-music');
         const letterContentElement = document.querySelector('#letter-section .letter-content');
+        const passwordToggleIcon = document.getElementById('password-toggle-icon');
 
 
         function checkPassword() {
@@ -91,6 +97,20 @@
             backgroundMusic.currentTime = 0; // Reset lagu
         }
 
+        // Fungsi untuk menampilkan/menyembunyikan password
+        function togglePasswordVisibility() {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggleIcon.classList.remove('fa-eye');
+                passwordToggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordToggleIcon.classList.remove('fa-eye-slash');
+                passwordToggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Fungsi showCode() dan hideCode() dari sebelumnya tetap ada jika ingin dipakai
         function showCode() {
             loginSection.classList.add('hidden');
             letterSection.classList.add('hidden');
@@ -98,7 +118,6 @@
             backgroundMusic.pause(); // Hentikan musik saat menampilkan kode
             backgroundMusic.currentTime = 0; // Reset musik
 
-            // Ambil dan format konten surat untuk ditampilkan sebagai kode
             const letterParagraphs = Array.from(letterContentElement.querySelectorAll('p')).map(p => p.textContent).join('\n\n');
             letterCodeElement.textContent = letterParagraphs;
         }
