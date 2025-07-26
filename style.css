@@ -11,6 +11,41 @@
     --button-hover: #5e7c7d; /* Primary lebih gelap untuk hover */
 }
 
+:root {
+    /* Palet warna lembut dan bersih */
+    --primary-color: #7a9e9f; /* Teal kehijauan */
+    --secondary-color: #c9ada7; /* Dusty rose/Muted pink */
+    --background-light: #f5f5f5; /* Sangat terang, hampir putih */
+    --background-paper: #ffffff; /* Putih bersih untuk konten */
+    --text-dark: #333333; /* Hitam gelap untuk teks utama */
+    --text-medium: #555555; /* Abu-abu sedang untuk paragraf */
+    --border-light: #e0e0e0; /* Border abu-abu terang */
+    --error-color: #e74c3c; /* Merah error */
+    --button-hover: #5e7c7d; /* Primary lebih gelap untuk hover */
+    /* Warna Senja Baru */
+    --sunset-yellow: #ffdd88; /* Kuning terang senja */
+    --sunset-orange: #ffaa55; /* Oranye senja */
+    --sunset-pink: #ff8888; /* Merah muda senja */
+}
+
+body {
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    /* Ganti ini dengan background gradient senja */
+    background: linear-gradient(to bottom right, var(--sunset-yellow), var(--sunset-orange), var(--sunset-pink));
+    /* Anda bisa juga mencoba arah lain:
+       linear-gradient(to right, var(--sunset-yellow), var(--sunset-orange));
+       linear-gradient(45deg, var(--sunset-yellow), var(--sunset-orange), var(--sunset-pink));
+    */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    color: var(--text-dark);
+}
+
 warning-clue {
     color: var(--error-color); /* Menggunakan variabel warna merah yang sudah ada */
     font-weight: bold;
