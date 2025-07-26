@@ -12,9 +12,9 @@
         <div id="login-section">
             <h1>Selamat Datang</h1>
             <p>Untuk membaca surat ini, silakan masukkan kata sandi.</p>
-            
-            <p class="clue-text">Clue = Kata sandi adalah satu teks kalimat surat fisik yang pernah terkirim. Baca kalimat terakhirnya. Satu kata di akhir itu adalah sandi untuk membuka file ini. (tanpa spasi, huruf kecil semua, satu kata saja)</p>
-            
+            <p class="warning-clue">
+                Clue: kata sandi adalah satu teks kalimat surat fisik yang pernah terkirim. Baca kalimat terakhirnya. Satu kata di akhir itu adalah sandi untuk membuka file ini. (tanpa spasi, huruf kecil semua, satu kata saja)
+            </p>
             <div class="password-input-container">
                 <input type="password" id="password-input" placeholder="Kata Sandi Rahasia">
                 <span class="password-toggle" onclick="togglePasswordVisibility()">
@@ -64,7 +64,7 @@
     </div>
 
     <script>
-        // KATA SANDI ANDA ADA DI SINI
+        // *** KATA SANDI ANDA ADA DI SINI ***
         const CORRECT_PASSWORD = 'terasa'; 
 
         const passwordInput = document.getElementById('password-input');
@@ -76,7 +76,7 @@
         const backgroundMusic = document.getElementById('background-music');
         const letterContentElement = document.querySelector('#letter-section .letter-content');
         const passwordToggleIcon = document.getElementById('password-toggle-icon');
-        
+
         // Variabel baru untuk elemen form
         const messageSection = document.getElementById('message-section');
         const contactForm = document.getElementById('contact-form');
@@ -97,3 +97,111 @@
                     }).catch(error => {
                         console.log("Auto-play diblokir. Silakan putar musik secara manual.");
                     });
+                }
+
+            } else {
+                errorMessage.classList.remove('hidden');
+                passwordInput.value = ''; // Bersihkan input
+                passwordInput.focus(); // Fokuskan kembali ke input
+                backgroundMusic.pause(); // Pastikan lagu berhenti jika ada kesalahan
+                backgroundMusic.currentTime = 0; // Reset lagu
+            }
+        }
+
+        function logout() {
+            letterSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            passwordInput.focus(); // Fokuskan kembali ke input
+            backgroundMusic.pause(); // Hentikan lagu saat logout
+            backgroundMusic.currentTime = 0; // Reset lagu
+        }
+
+        function togglePasswordVisibility() {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggleIcon.classList.remove('fa-eye');
+                passwordToggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordToggleIcon.classList.remove('fa-eye-slash');
+                passwordToggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        function showCode() {
+            loginSection.classList.add('hidden');
+            letterSection.classList.add('hidden');
+            codeSection.classList.remove('hidden');
+            backgroundMusic.pause(); // Hentikan musik saat menampilkan kode
+            backgroundMusic.currentTime = 0; // Reset musik
+
+            const letterParagraphs = Array.from(letterContentElement.querySelectorAll('p')).map(p => p.textContent).join('\n\n');
+            letterCodeElement.textContent = letterParagraphs;
+        }
+
+        function hideCode() {
+            codeSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            passwordInput.focus();
+        }
+
+        // Fungsi untuk menampilkan form pesan
+        function showMessageForm() {
+            letterSection.classList.add('hidden');
+            messageSection.classList.remove('hidden');
+        }
+
+        // Fungsi untuk menyembunyikan form pesan dan kembali ke surat
+        function hideMessageForm() {
+            messageSection.classList.add('hidden');
+            letterSection.classList.remove('hidden');
+            formStatus.classList.add('hidden'); // Sembunyikan status
+            contactForm.reset(); // Bersihkan formulir
+        }
+
+        // Tangani submit formulir menggunakan Formspree
+        contactForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Mencegah reload halaman
+            const form = event.target;
+            const data = new FormData(form);
+            
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    formStatus.textContent = "Pesan berhasil terkirim! Terima kasih.";
+                    formStatus.style.color = 'green';
+                    formStatus.classList.remove('hidden');
+                    form.reset(); // Bersihkan formulir setelah sukses
+                } else {
+                    const responseData = await response.json();
+                    if (responseData.errors) {
+                        formStatus.textContent = responseData.errors.map(error => error.message).join(', ');
+                    } else {
+                        formStatus.textContent = "Oops! Ada masalah saat mengirim pesan Anda.";
+                    }
+                    formStatus.style.color = 'red';
+                    formStatus.classList.remove('hidden');
+                }
+            } catch (error) {
+                formStatus.textContent = "Terjadi kesalahan jaringan. Coba lagi nanti.";
+                formStatus.style.color = 'red';
+                formStatus.classList.remove('hidden');
+            }
+        });
+
+        // Untuk mengizinkan menekan Enter pada input password
+        passwordInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>
